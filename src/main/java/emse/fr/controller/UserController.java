@@ -15,8 +15,8 @@ import emse.fr.model.Group;
 import emse.fr.model.User;
 
 @Controller
-@RequestMapping("/html")
-public class HTMLController {
+@RequestMapping("/user")
+public class UserController {
 
 	DBClass dbClass = new DBClass();
 	Connection conn = dbClass.returnConnection();
@@ -93,8 +93,8 @@ public class HTMLController {
 		}
 	}
 
-	@RequestMapping("/newuser")
-	public String newUser(Model model, @RequestParam("email") String email,
+	@RequestMapping("/newuser/{email}")
+	public String newUser(Model model, @RequestParam String email,
 			@RequestParam("first_name") String first_name, @RequestParam("last_name") String last_name,
 			@RequestParam("brief_biography") String brief_biography) throws SQLException {
 
@@ -116,8 +116,8 @@ public class HTMLController {
 		return "userpage";
 	}
 
-	@RequestMapping("/changename")
-	public String changeName(Model model, @RequestParam("email") String email,
+	@RequestMapping("/changename/{email}")
+	public String changeName(Model model, @RequestParam String email,
 			@RequestParam("first_name") String first_name, @RequestParam("last_name") String last_name)
 			throws SQLException {
 
@@ -134,8 +134,8 @@ public class HTMLController {
 
 	}
 
-	@RequestMapping("/changebiography")
-	public String changeBiography(Model model, @RequestParam("email") String email,
+	@RequestMapping("/changebiography/{email}")
+	public String changeBiography(Model model, @RequestParam String email,
 			@RequestParam("brief_biography") String brief_biography) throws SQLException {
 		if (userExists(email)) {
 			Statement statement = conn.createStatement();
@@ -151,8 +151,8 @@ public class HTMLController {
 
 	}
 
-	@RequestMapping("/deteleaccount")
-	public String deteleAccount(Model model, @RequestParam("email") String email) throws SQLException {
+	@RequestMapping("/deteleaccount/{email}")
+	public String deteleAccount(Model model, String email) throws SQLException {
 		if (userExists(email)) {
 			Statement statement = conn.createStatement();
 			statement.executeUpdate("DELETE FROM USERS WHERE email='" + email + "';");
@@ -163,8 +163,8 @@ public class HTMLController {
 		}
 	}
 
-	@RequestMapping("/joingroup")
-	public String joinGroup(Model model, @RequestParam("email") String email, @RequestParam("name") String name)
+	@RequestMapping("/joingroup/{email}")
+	public String joinGroup(Model model, @RequestParam String email, @RequestParam("name") String name)
 			throws SQLException {
 		if (userExists(email)) {
 			if (groupExists(name)) {
@@ -182,8 +182,8 @@ public class HTMLController {
 		}
 	}
 
-	@RequestMapping("/leavegoup")
-	public String leaveGroup(Model model, @RequestParam("email") String email, @RequestParam("name") String name)
+	@RequestMapping("/leavegoup/{email}")
+	public String leaveGroup(Model model, @RequestParam String email, @RequestParam("name") String name)
 			throws SQLException {
 		if (userExists(email)) {
 			if (groupExists(name)) {
@@ -199,8 +199,8 @@ public class HTMLController {
 		}
 	}
 
-	@RequestMapping("/checkprofile")
-	public String checkProfile(Model model, @RequestParam("email") String email) throws SQLException {
+	@RequestMapping("/checkprofile/{email}")
+	public String checkProfile(Model model, @RequestParam String email) throws SQLException {
 		model.addAttribute("user", getUser(email));
 		if (userExists(email)) {
 			return "userpage";
@@ -209,8 +209,8 @@ public class HTMLController {
 		}
 	}
 
-	@RequestMapping("/comment")
-	public String newComment(Model model, @RequestParam("email") String email, @RequestParam("name") String name,
+	@RequestMapping("/comment/{email}")
+	public String newComment(Model model, @RequestParam String email, @RequestParam("name") String name,
 			@RequestParam("comment") String comment) throws SQLException {
 		
 		
@@ -234,8 +234,8 @@ public class HTMLController {
 		}
 	}
 	
-	@RequestMapping("/newgroup")
-	public String newGroup(Model model, @RequestParam("name") String name,
+	@RequestMapping("/newgroup/{name}")
+	public String newGroup(Model model, @RequestParam String name,
 			@RequestParam("description") String description, @RequestParam("admin") String admin) throws SQLException {
 
 		if (!groupExists(name)) {
@@ -256,8 +256,8 @@ public class HTMLController {
 
 	}
 
-	@RequestMapping("/changedescription")
-	public String newGroup(Model model, @RequestParam("name") String name,
+	@RequestMapping("/changedescription/{name}")
+	public String newGroup(Model model, @RequestParam String name,
 			@RequestParam("description") String description) throws SQLException {
 
 		if (groupExists(name)) {
@@ -273,8 +273,8 @@ public class HTMLController {
 		}
 	}
 
-	@RequestMapping("/deletegroup")
-	public String deteleGroup(Model model, @RequestParam("name") String name) throws SQLException {
+	@RequestMapping("/deletegroup/{name}")
+	public String deteleGroup(Model model, @RequestParam String name) throws SQLException {
 		if (groupExists(name)) {
 			Statement statement = conn.createStatement();
 			statement.executeUpdate("DELETE FROM GROUPS WHERE name='" + name + "';");
@@ -285,8 +285,8 @@ public class HTMLController {
 		}
 	}
 	
-	@RequestMapping("/checkgroup")
-	public String checkgroup(Model model, @RequestParam("name") String name) throws SQLException {
+	@RequestMapping("/checkgroup/{name}")
+	public String checkgroup(Model model, @RequestParam String name) throws SQLException {
 		if (groupExists(name)) {
 			model.addAttribute("group", getGroup(name));
 			return "grouppage";

@@ -11,14 +11,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import emse.fr.database.DBClass;
 import emse.fr.model.Group;
 
-//@RestController
-@Controller
-@RequestMapping("/rest")
+@RestController
+//@Controller
+@RequestMapping("/group")
 
-public class RESTController {
+public class GroupController {
 
 	DBClass dbClass = new DBClass();
 	Connection conn = dbClass.returnConnection();
@@ -90,8 +92,8 @@ public class RESTController {
 		return groups;
 	}
 
-	@RequestMapping("/listjoinedgroups")
-	public List<Group> listJoinedGroups(Model model, @RequestParam("email") String email) throws SQLException {
+	@RequestMapping("/listjoinedgroups/{email}")
+	public List<Group> listJoinedGroups(Model model, @RequestParam String email) throws SQLException {
 		List<Group> groups = new ArrayList<Group>();
 		if (userExists(email)) {
 			
@@ -116,7 +118,7 @@ public class RESTController {
 		}
 	}
 
-	@RequestMapping("/viewmembers")
+	@RequestMapping("/viewmembers/{name}")
 	public List<String> viewMembers(Model model, @RequestParam("name") String name) throws SQLException {
 		if (groupExists(name)) {
 			List<String> members = new ArrayList<String>();
